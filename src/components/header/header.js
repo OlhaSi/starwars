@@ -7,11 +7,11 @@ const Header = (props) => {
   return (
     <div className="header">
         <ul>
-            <li onClick = {onPersonChange}>
-                <a href="#">People</a>
+            <li>
+                <a onClick = {onPersonChange} href="">People</a>
             </li>
-            <li onClick = {onPlanetChange}>
-                <a href="#">Planets</a>
+            <li >
+                <a onClick = {onPlanetChange} href="">Planets</a>
             </li>
             <li onClick = {onStarshipChange}>
                 <a href="#">Starships</a>

@@ -15,14 +15,18 @@ export default class App extends Component {
         starshipPage: false
     }
 
-    onPersonChange = () => {
+    onPersonChange = (e) => {
+        e.preventDefault();
+
         this.setState({
             personPage:true,
             planetPage: false,
             starshipPage: false
         });
     }
-    onPlanetChange = () => {
+    onPlanetChange = (e) => {
+        e.preventDefault();
+
         this.setState({
             planetPage:true,
             personPage: false,
