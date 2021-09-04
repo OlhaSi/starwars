@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import PersonDetails from '../person-details';
 import PlanetDetails from '../planet-details';
@@ -19,7 +19,7 @@ export default class App extends Component {
         e.preventDefault();
 
         this.setState({
-            personPage:true,
+            personPage: true,
             planetPage: false,
             starshipPage: false
         });
@@ -28,15 +28,15 @@ export default class App extends Component {
         e.preventDefault();
 
         this.setState({
-            planetPage:true,
+            planetPage: true,
             personPage: false,
             starshipPage: false
-            
+
         });
     }
     onStarshipChange = () => {
         this.setState({
-            starshipPage:true,
+            starshipPage: true,
             personPage: false,
             planetPage: false,
         });
@@ -45,20 +45,20 @@ export default class App extends Component {
     render() {
         const {personPage, planetPage, starshipPage} = this.state;
 
-        const person =  personPage ? <PersonDetails/> : null;
+        const person = personPage ? <PersonDetails/> : null;
         const planet = planetPage ? <PlanetDetails/> : null;
         const starship = starshipPage ? <StarshipDetails/> : null;
 
         return (
-        <div>
-            <Header 
-                onPersonChange = {this.onPersonChange}
-                onPlanetChange = {this.onPlanetChange}
-                onStarshipChange = {this.onStarshipChange}/>
-            {person}
-            {planet}
-            {starship}
-        </div>
+            <div>
+                <Header
+                    onPersonChange={this.onPersonChange}
+                    onPlanetChange={this.onPlanetChange}
+                    onStarshipChange={this.onStarshipChange}/>
+                {person}
+                {planet}
+                {starship}
+            </div>
         );
     }
 }

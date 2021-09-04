@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './button.css';
 
-export default class Button extends Component {
+const Button = (props) => (
+    <div>
+        <button type="button" className='btn' onClick={() => props.onClick()}>
+            Next
+        </button>
+    </div>
+);
 
-  render() {
-    return (
-      <button className='btn' onClick={() => this.props.onClick()}>Next</button>
-    )
-  }
-}
+export default Button;

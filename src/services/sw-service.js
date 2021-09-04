@@ -1,4 +1,4 @@
-const { default: axios } = require("axios")
+const {default: axios} = require("axios")
 
 async function getPersonByID(nextIndex) {
     const resp = await axios.get(`https://swapi.dev/api/people/${nextIndex}`)
@@ -12,7 +12,7 @@ async function getPersonByID(nextIndex) {
 }
 
 async function getPlanetByID(nextIndex) {
-    const resp = await axios.get(`https://swapi.dev/api/planets/${nextIndex }`)
+    const resp = await axios.get(`https://swapi.dev/api/planets/${nextIndex}`)
     return {
         img: `https://starwars-visualguide.com/assets/img/planets/${nextIndex}.jpg`,
         name: resp.data.name,
