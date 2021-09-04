@@ -34,7 +34,9 @@ export default class App extends Component {
 
         });
     }
-    onStarshipChange = () => {
+    onStarshipChange = (e) => {
+        e.preventDefault();
+
         this.setState({
             starshipPage: true,
             personPage: false,

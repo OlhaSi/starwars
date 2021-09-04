@@ -14,7 +14,7 @@ const Header = (props) => {
                     <a onClick={onPlanetChange} href="">Planets</a>
                 </li>
                 <li>
-                    <a onClick={onStarshipChange} href="#">Starships</a>
+                    <a onClick={onStarshipChange} href="">Starships</a>
                 </li>
             </ul>
         </div>

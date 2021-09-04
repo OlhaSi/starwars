@@ -1,4 +1,5 @@
 .btn {
+    font-family: "Times New Roman", Times, serif;
     background-color: #666;
     width: 450px;
     margin: 0 auto;
@@ -14,4 +15,5 @@
 
 .btn:hover {
     color: #000;
+    cursor: pointer;
 }
