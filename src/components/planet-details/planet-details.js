@@ -1,64 +1,58 @@
-import React, {Component} from 'react';
-import Button from '../button/button';
+import React, { useCallback, useEffect, useState } from "react";
+import Button from "../button/button";
 
-import {getPlanetByID} from '../../services/sw-service';
-import './planet-details.css';
+import { getPlanetByID } from "../../services/sw-service";
+import "./planet-details.css";
 
-export default class PlanetDetails extends Component {
-    constructor(props) {
-        super(props)
+const PlanetDetails = () => {
+  const [index, setIndex] = useState(1);
+  const [planet, setPlanet] = useState({});
 
-        this.state = {
-            index: 1,
-            planet: {}
-        }
-    }
+  const fetchNextPlanet = useCallback(() => {
+    const nextIndex = index < 15 ? index + 1 : 2;
+    getPlanetByID(nextIndex)
+      .then((resp) => {
+        setPlanet(resp);
+        setIndex(nextIndex);
+      })
+      .catch((err) => setIndex(nextIndex));
+  }, [index]);
 
-    handleClick() {
-        const nextIndex = this.state.index < 15 ? this.state.index + 1 : 2
-        getPlanetByID(nextIndex).then(resp => {
-            this.setState({
-                planet: resp,
-                index: nextIndex
-            })
-        })
-    }
+  const onClick = useCallback(() => {
+    fetchNextPlanet();
+  }, [fetchNextPlanet]);
 
-    componentDidMount() {
-        this.handleClick()
-    }
+  useEffect(() => {
+    fetchNextPlanet();
+  }, []);
 
-    onClick = () => {
-        this.handleClick()
-    }
+  const { img, name, diameter, gravity, population } = planet;
 
-    render() {
-        const {planet: {img, name, diameter, gravity, population}} = this.state
+  return (
+    <div className="card">
+      <div className="item-details">
+        <img alt="planet-img" className="item-image" src={img} />
+        <div className="card-body">
+          <h3>{name}</h3>
+          <ul className="list-group">
+            <li className="list-group-item">
+              <span>Diameter: </span>
+              <span>{diameter}</span>
+            </li>
+            <li className="list-group-item">
+              <span>Gravity: </span>
+              <span>{gravity}</span>
+            </li>
+            <li className="list-group-item">
+              <span>Population: </span>
+              <span>{population}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <Button onClick={onClick} />
+    </div>
+  );
+};
 
-        return (
-            <div className="card">
-                <div className="item-details">
-                    <img alt="planet-img" className="item-image" src={img}/>
-                    <div className="card-body">
-                        <h3>{name}</h3>
-                        <ul className="list-group">
-                            <li className="list-group-item">
-                                <span>Diameter: </span>
-                                <span>{diameter}</span>
-                            </li>
-                            <li className="list-group-item">
-                                <span>Gravity: </span>
-                                <span>{gravity}</span>
-                            </li>
-                            <li className="list-group-item">
-                                <span>Population: </span>
-                                <span>{population}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <Button onClick={this.onClick}/>
-            </div>
-        )
-    }
-}
+export default PlanetDetails;

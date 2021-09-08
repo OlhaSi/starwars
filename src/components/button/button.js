@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import './button.css';
+import "./button.css";
 
 const Button = (props) => (
-        <button type="button" className='btn' onClick={() => props.onClick()}>
-            Next
-        </button>
+  <button type="button" className="btn" onClick={() => props.onClick()}>
+    Next
+  </button>
 );
 
 export default Button;

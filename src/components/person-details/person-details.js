@@ -1,64 +1,58 @@
-import React, {Component} from 'react';
-import Button from '../button/button';
+import React, { useCallback, useEffect, useState } from "react";
+import Button from "../button/button";
 
-import {getPersonByID} from '../../services/sw-service';
-import './person-details.css';
+import { getPersonByID } from "../../services/sw-service";
+import "./person-details.css";
 
-export default class PersonDetails extends Component {
-    constructor(props) {
-        super(props)
+const PersonDetails = () => {
+  const [index, setIndex] = useState(0);
+  const [person, setPerson] = useState({});
 
-        this.state = {
-            index: 0,
-            person: {}
-        }
-    }
+  const fetchNextPerson = useCallback(() => {
+    const nextIndex = index < 15 ? index + 1 : 1;
+    getPersonByID(nextIndex)
+      .then((resp) => {
+        setPerson(resp);
+        setIndex(nextIndex);
+      })
+      .catch((err) => setIndex(nextIndex));
+  }, [index]);
 
-    handleClick() {
-        const nextIndex = this.state.index < 15 ? this.state.index + 1 : 1
-        getPersonByID(nextIndex).then(resp => {
-            this.setState({
-                person: resp,
-                index: nextIndex
-            })
-        })
-    }
+  const onClick = useCallback(() => {
+    fetchNextPerson();
+  }, [fetchNextPerson]);
 
-    componentDidMount() {
-        this.handleClick()
-    }
+  useEffect(() => {
+    fetchNextPerson();
+  }, []);
 
-    onClick = () => {
-        this.handleClick()
-    }
+  const { img, name, gender, birth_year, eye_color } = person;
 
-    render() {
-        const {person: {img, name, gender, birth_year, eye_color}} = this.state
+  return (
+    <div className="card">
+      <div className="item-details">
+        <img alt="person-img" className="item-image" src={img} />
+        <div className="card-body">
+          <h3>{name}</h3>
+          <ul className="list-group">
+            <li className="list-group-item">
+              <span>Gender: </span>
+              <span>{gender}</span>
+            </li>
+            <li className="list-group-item">
+              <span>Birth Year: </span>
+              <span>{birth_year}</span>
+            </li>
+            <li className="list-group-item">
+              <span>Eye Color: </span>
+              <span>{eye_color}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <Button onClick={onClick} />
+    </div>
+  );
+};
 
-        return (
-            <div className="card">
-                <div className="item-details">
-                    <img alt="person-img" className="item-image" src={img}/>
-                    <div className="card-body">
-                        <h3>{name}</h3>
-                        <ul className="list-group">
-                            <li className="list-group-item">
-                                <span>Gender: </span>
-                                <span>{gender}</span>
-                            </li>
-                            <li className="list-group-item">
-                                <span>Birth Year: </span>
-                                <span>{birth_year}</span>
-                            </li>
-                            <li className="list-group-item">
-                                <span>Eye Color: </span>
-                                <span>{eye_color}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <Button onClick={this.onClick}/>
-            </div>
-        )
-    }
-}
+export default PersonDetails;

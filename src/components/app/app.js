@@ -1,66 +1,53 @@
-import React, {Component} from 'react';
+import React, { useCallback, useState } from "react";
 
-import PersonDetails from '../person-details';
-import PlanetDetails from '../planet-details';
-import StarshipDetails from '../starship-details';
-import Header from '../header';
+import PersonDetails from "../person-details";
+import PlanetDetails from "../planet-details";
+import StarshipDetails from "../starship-details";
+import Header from "../header";
 
-import './app.css';
+import "./app.css";
 
-export default class App extends Component {
+const App = () => {
+  const [person, setPerson] = useState(true);
+  const [planet, setPlanet] = useState(false);
+  const [starship, setStarship] = useState(false);
 
-    state = {
-        personPage: true,
-        planetPage: false,
-        starshipPage: false
-    }
+  const onPersonChange = useCallback((e) => {
+    e.preventDefault();
 
-    onPersonChange = (e) => {
-        e.preventDefault();
+    setPerson(true);
+    setPlanet(false);
+    setStarship(false);
+  }, []);
 
-        this.setState({
-            personPage: true,
-            planetPage: false,
-            starshipPage: false
-        });
-    }
-    onPlanetChange = (e) => {
-        e.preventDefault();
+  const onPlanetChange = useCallback((e) => {
+    e.preventDefault();
 
-        this.setState({
-            planetPage: true,
-            personPage: false,
-            starshipPage: false
+    setPerson(false);
+    setPlanet(true);
+    setStarship(false);
+  }, []);
 
-        });
-    }
-    onStarshipChange = (e) => {
-        e.preventDefault();
+  const onStarshipChange = useCallback((e) => {
+    e.preventDefault();
 
-        this.setState({
-            starshipPage: true,
-            personPage: false,
-            planetPage: false,
-        });
-    }
+    setPerson(false);
+    setPlanet(false);
+    setStarship(true);
+  }, []);
 
-    render() {
-        const {personPage, planetPage, starshipPage} = this.state;
+  return (
+    <div>
+      <Header
+        onPersonChange={onPersonChange}
+        onPlanetChange={onPlanetChange}
+        onStarshipChange={onStarshipChange}
+      />
+      {person && <PersonDetails />}
+      {planet && <PlanetDetails />}
+      {starship && <StarshipDetails />}
+    </div>
+  );
+};
 
-        const person = personPage ? <PersonDetails/> : null;
-        const planet = planetPage ? <PlanetDetails/> : null;
-        const starship = starshipPage ? <StarshipDetails/> : null;
-
-        return (
-            <div>
-                <Header
-                    onPersonChange={this.onPersonChange}
-                    onPlanetChange={this.onPlanetChange}
-                    onStarshipChange={this.onStarshipChange}/>
-                {person}
-                {planet}
-                {starship}
-            </div>
-        );
-    }
-}
+export default App;
