@@ -1,45 +1,38 @@
-import React, { Component } from 'react';
-import Button from '../button/button';
+import React, { useCallback, useEffect, useState } from "react";
+import Button from "../button/button";
 
-import {getPlanetByID} from '../../services/sw-service';
-import './planet-details.css';
+import { getPlanetByID } from "../../services/sw-service";
+import "./planet-details.css";
 
-export default class PlanetDetails extends Component {
-  constructor(props) {
-    super(props)
-    
-    this.state = {
-      index: 1,
-      planet: {}
-    }
-  }
+const PlanetDetails = () => {
+  const [index, setIndex] = useState(1);
+  const [planet, setPlanet] = useState({});
 
-  handleClick() {
-    const nextIndex = this.state.index < 15 ? this.state.index + 1 : 2
-    getPlanetByID(nextIndex).then(resp => {
-      this.setState({
-        planet: resp,
-        index: nextIndex
+  const fetchNextPlanet = useCallback(() => {
+    const nextIndex = index < 15 ? index + 1 : 2;
+    getPlanetByID(nextIndex)
+      .then((resp) => {
+        setPlanet(resp);
+        setIndex(nextIndex);
       })
-    })
-  }
+      .catch((err) => setIndex(nextIndex));
+  }, [index]);
 
-  componentDidMount() {
-    this.handleClick()
-  }
+  const onClick = useCallback(() => {
+    fetchNextPlanet();
+  }, [fetchNextPlanet]);
 
-  onClick = () => {
-    this.handleClick()    
-  }
+  useEffect(() => {
+    fetchNextPlanet();
+  }, []);
 
-  render() {
-    const {planet: {img, name, diameter, gravity, population}} = this.state
+  const { img, name, diameter, gravity, population } = planet;
 
-    return (
-      <div className="card">
-        <div className="item-details">
-          <img alt="planet-img" className="item-image" src={img}/>
-          <div className="card-body">
+  return (
+    <div className="card">
+      <div className="item-details">
+        <img alt="planet-img" className="item-image" src={img} />
+        <div className="card-body">
           <h3>{name}</h3>
           <ul className="list-group">
             <li className="list-group-item">
@@ -55,10 +48,11 @@ export default class PlanetDetails extends Component {
               <span>{population}</span>
             </li>
           </ul>
-          </div>
         </div>
-        <Button onClick={this.onClick}/>
       </div>
-    )
-  }
-}
+      <Button onClick={onClick} />
+    </div>
+  );
+};
+
+export default PlanetDetails;
